@@ -1,0 +1,102 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+$displays:inline, inline-block, block, flex, grid, table, table-cell;
+$positions:static, relative, absolute, fixed, sticky;
+$jContents:start, center, end, space-between, space-around, space-evenly;
+
+@include loopProperties(5, 50, 5, margin, "m");
+@include loopProperties(5, 50, 5, margin-top, "mt");
+@include loopProperties(5, 50, 5, margin-bottom, "mb");
+@include loopProperties(5, 50, 5, margin-left, "ml");
+@include loopProperties(5, 50, 5, margin-right, "mr");
+
+@include loopProperties(5, 50, 5, padding, "p");
+@include loopProperties(5, 50, 5, padding-top, "pt");
+@include loopProperties(5, 50, 5, padding-bottom, "pb");
+@include loopProperties(5, 50, 5, padding-left, "pl");
+@include loopProperties(5, 50, 5, padding-right, "pr");
+
+@include loopProperties(10, 100, 10, width, "w", "%");
+@include loopProperties(50, 1500, 50, max-width, "mw");
+@include loopProperties(50, 1500, 50, height, "h");
+
+@include listProperties($displays, display, "d");
+@include listProperties($positions, position, "pos");
+
+@include mapProperties($colors, background-color, "bg");
+@include mapProperties($colors, color, "color");
+
+@each $key, $color in $colors {
+    .border-#{$key} {
+        border:1px solid $color;
+    }
+}
+
+.container-lg {
+    width:map-get($sizes, "width-lg");
+    margin:auto;
+
+    @media screen and (max-width:1280px) {
+        width:map-get($sizes, "width-md");
+    }
+
+    @media screen and (max-width:1080px) {
+        width:map-get($sizes, "width-sm");
+    }
+
+    @media screen and (max-width:720px) {
+        width:map-get($sizes, "width-xs");
+    }
+
+    @media screen and (max-width:640px) {
+        width:100%;
+    }
+}
+
+/*
+a vw egy relatív érték, a szélességhez képest hasonlítja meg önmagát, egy idő után, amikor már a szélesség mar nagyon kicsi lesz,
+mert húzzuk be a képernyőt a böngészőben, akkor már pl. a xl-es space (space mappában lett meghatározva, 25px)
+nagyobbá válik, mint a 3%-a vw-nek 
+Mivel max, így a két érték közül mindig a nagyobbikat fogja kiválasztani 
+
+Az a lényeg, hogy százalékosan adjuk meg a padding-et, de csak addig, amíg nem éri el ezt a xl-es méretet a 25px-t és 
+utána 25px marad ->
+Azért csináljuk ezt, mert nagyobb kijelzőn a nagyobb padding az jobban néz ki, viszont kisebb kijelzőn, ha nagyon pici a kijelző, 
+akkor meg ne menjen be nagyon kicsire a padding, ezért van ez a spaces xl, hogyha azt eléri, akkor maradjon annyi 
+*/
+
+.p-xl {
+    padding:max(3vw, map-get($spaces, "xl"));
+}
+
+.p-lg {
+    padding:max(2vw, map-get($spaces, "lg"));
+}
+
+.p-md {
+    padding:max(1.5vw, map-get($spaces, "md"));
+}
+
+.p-sm {
+    padding:max(1vw, map-get($spaces, "sm"));
+}
+
+.m-xl {
+    margin:max(3vw, map-get($spaces, "xl"));
+}
+
+.m-lg {
+    margin:max(2vw, map-get($spaces, "lg"));
+}
+
+.m-md {
+    margin:max(1.5vw, map-get($spaces, "md"));
+}
+
+.m-sm {
+    margin:max(1vw, map-get($spaces, "sm"));
+}

@@ -1,0 +1,89 @@
+/*
+Egy olyan grid rendszer, ami 12 rész felé osztja az elérhető szélességét a weboldalnak ->
+calc(100%/12)
+
+és loopban ezt megszorozza az i-vel, ami egytől megy 12-ig 
+az lg 1200px felett veszi fel ezeket a szélességeket 
+ha azt mondjuk neki, hogy 1/12 a szélesség, akkor az csak 1200px felett fog élni, 
+mert az lg az a lényege, hogy ezek a szabályok a voiszonylag szélesebb készülékeken vannak érvényben 
+utána jön a md, ami 1080px-en megy be egy oszthatóba 
+
+row megvan adva egy div-nek amiben van kettő div
+és mindegyiknek meg van adva class-ként a col-lg-6 -> 
+akkor 1200 px-ig felosztják a képernyőt 6 és 6 egységre (12 az egész látható szélesség)
+ha elérik az 1200px-t és utána húzzuk tovább befele, akkor felveszi a width: 100%-ot 
+tehát a két div beugrik egymás alá a flex-wrap miatt ami azt csinálja, hogyha már az elemek nem férnek ki, akkor beugrik a következő 
+sorba és nem azt, hogy kezdi összenyomni a benne található elemeket 
+
+        <div class="col-lg-6 col-md-4"></div>
+        <div class="col-lg-6 col-md-8"></div>
+
+megadtuk az egyik gridnek a col-md-4-et a másiknak a col-md-8-at
+ilyenkor, ha elérik az 1200px-t, akkor az egyik 4 egységet fog felvenni a másik 8-at és csak, akkor ugranak be egymás alá, ha kisebb
+lesz a képernyő 1080px-nél 
+és így tovább még megadunk col-sm-eket és col-xs-eket 
+
+Úgy müködik, hogy meghatározunk egy relatív szélességet -> width:calc(100%/12 * $i)
+és mondjuk az elsőnél (lg) 12000px-nél megy be 100%-ba 
+másodiknál (md) teljesen ugyanúgy meghatározunk egy relatív szélességet, de az már 1080px-nél megy be 100%-ba
+!!!! important van, amit a lg szabályokba írunk és az md important-vel felülírjuk, mert az lejjebb van, mint a lg important
+
+így tovább az sm 1080px-nél írja felül az md szabályait és 800px-nél megy be egymás alá
+*/
+
+.row {
+    display:flex;
+    flex-wrap:wrap;
+}
+
+@for $i from 1 through 12 {
+    .col-lg-#{$i} {
+        width:calc(100%/12 * $i)!important;/*meghatározzuk, hogy milyen széles legyen egy i*/
+
+        @media screen and (max-width:1200px) {
+            width:100%; /*1200px alatt a szélesség felveszi a képernyő 100%-át*/
+        }
+    }
+}
+
+@for $i from 1 through 12 {
+    .col-md-#{$i} {
+        width:calc(100%/12 * $i);
+
+        @media screen and (max-width:1200px) {
+            width:calc(100%/12 * $i)!important;
+        }
+
+        @media screen and (max-width:1080px) {
+            width:100%!important;
+        }
+    }
+}
+
+@for $i from 1 through 12 {
+    .col-sm-#{$i} {
+        width:calc(100%/12 * $i);
+
+        @media screen and (max-width:1080px) {
+            width:calc(100%/12 * $i)!important;
+        }
+
+        @media screen and (max-width:800px) {
+            width:100 !important;;
+        }
+    }
+}
+
+@for $i from 1 through 12 {
+    .col-xs-#{$i} {
+        width:calc(100%/12 * $i);
+
+        @media screen and (max-width:800px) {
+            width:calc(100%/12 * $i)!important;
+        }
+
+        @media screen and (max-width:600px) {
+            width:100% !important;;
+        }
+    }
+}

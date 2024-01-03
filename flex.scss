@@ -1,0 +1,41 @@
+.flex {
+    display:flex;
+}
+
+/*
+ha azt állítjuk be, hogy flex-wrap: wrap;
+akkor amennyiben már nem férnek ki a flex-boxban az elemek,
+akkor berakja őket egymás alá 
+*/
+.wrap {
+    flex-wrap:wrap;
+}
+
+/*
+Hiába nem férnének ki az elemek, akkor összenyomja őket 
+*/
+.nowrap {
+    flex-wrap:nowrap;
+}
+/*
+Akkor is ledobja őket, de úgy, ha van 4 db div-ünk 
+*/
+.wrap-reverse {
+    flex-wrap:wrap-reverse;
+}
+
+.flex-dir-col {
+    flex-direction: column;
+}
+
+.flex-dir-row {
+    flex-direction: row;
+}
+
+.flex-dir-col-rev {
+    flex-direction: column-reverse;
+}
+
+.flex-dir-row-rev {
+    flex-direction: row-reverse;
+}
